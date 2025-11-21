@@ -5,9 +5,24 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --app-bg: #fff;
+  --app-fg: #111827;
+  --app-border: #e5e7eb;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+[data-theme='dark'] {
+  background: #0f172a;
+  color: #e5e7eb;
+  --app-bg: #0b122a;
+  --app-fg: #e5e7eb;
+  --app-border: #1f2937;
+}
+[data-theme='dark'] a { color: #e5e7eb }
+[data-theme='dark'] .app-shell { background: #0b122a; border-color: #1f2937 }
+[data-theme='dark'] h1, [data-theme='dark'] h2, [data-theme='dark'] h3, [data-theme='dark'] p, [data-theme='dark'] label, [data-theme='dark'] span { color: #e5e7eb }
+[data-theme='dark'] .card { background: #111827; border-color: #374151 }
+[data-theme='dark'] .desc { color: #9ca3af }
