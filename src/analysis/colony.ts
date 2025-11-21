@@ -273,7 +273,6 @@ export async function analyzeImage(
     }
   }
   if (colonies.length > 0) {
-    const avg = colonies.reduce((s, c) => s + c.sizePx, 0) / colonies.length
     const sorted = [...colonies].sort((a, b) => a.sizePx - b.sizePx)
     const median = sorted[Math.floor(colonies.length / 2)].sizePx
     for (let i = 0; i < colonies.length; i++) {

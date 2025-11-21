@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { analyzeImage, CircleRegion, Colony } from '../analysis/colony'
+import { FontAwesomeIcon, byPrefixAndName } from './FA'
 
 type ObservationData = {
   elevation: 'flat' | 'raised' | 'convex' | 'umbonate'
@@ -140,7 +141,6 @@ export default function UploadClient() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const resultCanvasRef = useRef<HTMLCanvasElement>(null)
-  const cameraInputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [showCamera, setShowCamera] = useState(false)
   const [showCameraFor, setShowCameraFor] = useState<string | null>(null)
@@ -161,6 +161,32 @@ export default function UploadClient() {
     }
     reader.readAsDataURL(file)
   }
+
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items
+      if (!items) return
+      for (const it of Array.from(items)) {
+        if (it.type.startsWith('image/')) {
+          const file = it.getAsFile()
+          if (!file) continue
+          const reader = new FileReader()
+          reader.onload = () => {
+            const data = String(reader.result ?? '')
+            setPreview(data)
+            setResultImage(null)
+            setColonies([])
+            setAvgSize(null)
+            setEffectiveCount(null)
+          }
+          reader.readAsDataURL(file)
+          break
+        }
+      }
+    }
+    window.addEventListener('paste', onPaste)
+    return () => window.removeEventListener('paste', onPaste)
+  }, [])
 
   async function startCamera() {
     try {
@@ -299,16 +325,29 @@ export default function UploadClient() {
 
   useEffect(() => {
     if (resultImage) toast.info(t('disclaimer.results'))
-  }, [resultImage])
+  }, [resultImage, t])
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: 16 }}>
       <div style={{ display: 'grid', gap: 16 }}>
         <div>
           <label style={{ fontWeight: 700 }}>{t('colonyAnalyzer.uploadImage')}</label>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <input type="file" accept="image/*" capture="environment" onChange={onFile} />
-            <button onClick={startCamera} style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #ccc', background: '#fff', fontWeight: 700 }}>{t('biochemicalTests.useCamera')}</button>
+          <div style={{ display: 'grid', gap: 8 }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', width:'100%' }}>
+              <label htmlFor="dropzone-file" style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', width:'100%', height:256, background:'var(--app-bg)', color:'var(--app-fg)', border:'1px dashed var(--app-border)', borderRadius:12, cursor:'pointer' }}>
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', paddingTop:20, paddingBottom:24 }}>
+                  <svg style={{ width:32, height:32, marginBottom:12 }} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"/></svg>
+                  <p style={{ marginBottom:8, fontSize:14 }}><span style={{ fontWeight:700 }}>{t('colonyAnalyzer.clickToUpload', { defaultValue: 'Click to upload' })}</span> {t('orDragAndDrop', { defaultValue: 'or drag and drop' })}</p>
+                  <p style={{ fontSize:12 }}>{t('colonyAnalyzer.allowedFormats', { defaultValue: 'SVG, PNG, JPG or GIF (MAX. 800x400px)' })}</p>
+                </div>
+                <input id="dropzone-file" type="file" className="hidden" accept="image/*" onChange={onFile} />
+              </label>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <button onClick={startCamera} aria-label={t('biochemicalTests.useCamera')} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:64, height:64, borderRadius:32, border: '1px solid #ccc', background: '#fff' }}>
+                <FontAwesomeIcon icon={byPrefixAndName.fass['aperture']} width={28} height={28} />
+              </button>
+            </div>
           </div>
           {showCamera && (
             <div style={{ display: 'grid', gap: 8, marginTop: 8 }}>
@@ -337,9 +376,44 @@ export default function UploadClient() {
                 </label>
               </div>
             </div>
-            <div>
+            <div onDragOver={e => { e.preventDefault() }} onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files?.[0]; if (f) { const reader = new FileReader(); reader.onload = () => { const data = String(reader.result ?? ''); setPreview(data); setResultImage(null); setColonies([]); setAvgSize(null); setEffectiveCount(null) }; reader.readAsDataURL(f) } }}>
               <img ref={imgRef} src={preview} alt="reference" style={{ display: 'none' }} />
-              <canvas ref={canvasRef} onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp} style={{ maxWidth: '100%', border: '2px solid #f97316', borderRadius: 12, cursor: drag ? 'grabbing' : 'grab' }} />
+              <canvas
+                ref={canvasRef}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                onMouseLeave={onMouseUp}
+                onTouchStart={e => {
+                  if (!circle || !canvasRef.current) return
+                  const rect = canvasRef.current.getBoundingClientRect()
+                  const sx = canvasRef.current.width / rect.width
+                  const sy = canvasRef.current.height / rect.height
+                  const t = e.touches[0]
+                  const x = (t.clientX - rect.left) * sx
+                  const y = (t.clientY - rect.top) * sy
+                  const d = Math.hypot(x - circle.centerX, y - circle.centerY)
+                  if (d < 20) setDrag('center')
+                  else if (Math.abs(d - circle.radius) < 20) setDrag('edge')
+                }}
+                onTouchMove={e => {
+                  if (!drag || !circle || !canvasRef.current || !imgDims) return
+                  const rect = canvasRef.current.getBoundingClientRect()
+                  const sx = canvasRef.current.width / rect.width
+                  const sy = canvasRef.current.height / rect.height
+                  const t = e.touches[0]
+                  const x = (t.clientX - rect.left) * sx
+                  const y = (t.clientY - rect.top) * sy
+                  if (drag === 'center') setCircle({ ...circle, centerX: Math.max(circle.radius, Math.min(imgDims.w - circle.radius, x)), centerY: Math.max(circle.radius, Math.min(imgDims.h - circle.radius, y)) })
+                  else {
+                    const nr = Math.hypot(x - circle.centerX, y - circle.centerY)
+                    const maxR = Math.min(circle.centerX, circle.centerY, imgDims.w - circle.centerX, imgDims.h - circle.centerY)
+                    setCircle({ ...circle, radius: Math.max(20, Math.min(nr, maxR)) })
+                  }
+                }}
+                onTouchEnd={() => setDrag(null)}
+                style={{ maxWidth: '100%', border: '2px solid #f97316', borderRadius: 12, cursor: drag ? 'grabbing' : 'grab' }}
+              />
             </div>
             <div>
               <button onClick={analyze} disabled={!preview || !circle} style={{ padding: '12px 16px', borderRadius: 12, background: '#1f5fff', color: '#fff', fontWeight: 700 }}>{t('colonyAnalyzer.analyze')}</button>
@@ -381,52 +455,52 @@ export default function UploadClient() {
             </div>
             <div>
               <h3 style={{ fontWeight: 700 }}>{t('observations')}</h3>
-              <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', background: 'var(--app-bg)', color: 'var(--app-fg)', border: '1px solid var(--app-border)', borderRadius: 12, padding: 12 }}>
+              <div className="obs-card bio-grid-2">
                 <label style={{ display: 'grid', gap: 4 }}>
-                  <span>{t('colonyAnalyzer.observations.elevation')}</span>
-                  <select value={observations.elevation} onChange={e => setObservations({ ...observations, elevation: e.target.value as any })}>
+                  <span className="obs-label">{t('colonyAnalyzer.observations.elevation')}</span>
+                  <select className="obs-select" value={observations.elevation} onChange={e => setObservations({ ...observations, elevation: e.target.value as any })}>
                     {['flat','raised','convex','umbonate'].map(o => (<option key={o} value={o}>{t(`colonyAnalyzer.observationOptions.elevation.${o}`)}</option>))}
                   </select>
                 </label>
                 <label style={{ display: 'grid', gap: 4 }}>
-                  <span>{t('colonyAnalyzer.observations.texture')}</span>
-                  <select value={observations.texture} onChange={e => setObservations({ ...observations, texture: e.target.value as any })}>
+                  <span className="obs-label">{t('colonyAnalyzer.observations.texture')}</span>
+                  <select className="obs-select" value={observations.texture} onChange={e => setObservations({ ...observations, texture: e.target.value as any })}>
                     {['smooth','rough','mucoid','powdery'].map(o => (<option key={o} value={o}>{t(`colonyAnalyzer.observationOptions.texture.${o}`)}</option>))}
                   </select>
                 </label>
                 <label style={{ display: 'grid', gap: 4 }}>
-                  <span>{t('colonyAnalyzer.observations.hemolysis')}</span>
-                  <select value={observations.hemolysis} onChange={e => setObservations({ ...observations, hemolysis: e.target.value as any })}>
+                  <span className="obs-label">{t('colonyAnalyzer.observations.hemolysis')}</span>
+                  <select className="obs-select" value={observations.hemolysis} onChange={e => setObservations({ ...observations, hemolysis: e.target.value as any })}>
                     {['none','alpha','beta','gamma'].map(o => (<option key={o} value={o}>{t(`colonyAnalyzer.observationOptions.hemolysis.${o}`)}</option>))}
                   </select>
                 </label>
                 <label style={{ display: 'grid', gap: 4 }}>
-                  <span>{t('colonyAnalyzer.observations.pigmentation')}</span>
-                  <select value={observations.pigmentation} onChange={e => setObservations({ ...observations, pigmentation: e.target.value as any })}>
+                  <span className="obs-label">{t('colonyAnalyzer.observations.pigmentation')}</span>
+                  <select className="obs-select" value={observations.pigmentation} onChange={e => setObservations({ ...observations, pigmentation: e.target.value as any })}>
                     {['none','white','yellow','orange','red','brown','black','green','pigmented'].map(o => (<option key={o} value={o}>{t(`colonyAnalyzer.observationOptions.pigmentation.${o}`)}</option>))}
                   </select>
                 </label>
                 <label style={{ display: 'grid', gap: 4 }}>
-                  <span>{t('colonyAnalyzer.observations.sampleType')}</span>
-                  <select value={observations.sampleType} onChange={e => setObservations({ ...observations, sampleType: e.target.value as any })}>
+                  <span className="obs-label">{t('colonyAnalyzer.observations.sampleType')}</span>
+                  <select className="obs-select" value={observations.sampleType} onChange={e => setObservations({ ...observations, sampleType: e.target.value as any })}>
                     {['','milk','cheese','meat','fermented','water','soil','grain','processed_food','other'].map(o => (<option key={o} value={o}>{t(`colonyAnalyzer.observationOptions.sampleType.${o}`)}</option>))}
                   </select>
                 </label>
                 <label style={{ display: 'grid', gap: 4 }}>
-                  <span>{t('colonyAnalyzer.observations.cultureMedium')}</span>
-                  <select value={observations.cultureMedium} onChange={e => setObservations({ ...observations, cultureMedium: e.target.value as any })}>
+                  <span className="obs-label">{t('colonyAnalyzer.observations.cultureMedium')}</span>
+                  <select className="obs-select" value={observations.cultureMedium} onChange={e => setObservations({ ...observations, cultureMedium: e.target.value as any })}>
                     {['','pca','mrsa','vogel','trypticase_soy','blood_agar','macconkey','selective','enrichment','other'].map(o => (<option key={o} value={o}>{t(`colonyAnalyzer.observationOptions.cultureMedium.${o}`)}</option>))}
                   </select>
                 </label>
                 <label style={{ gridColumn: '1/-1', display: 'grid', gap: 4 }}>
-                  <span>{t('colonyAnalyzer.observations.otherNotes')}</span>
-                  <textarea value={observations.otherNotes} onChange={e => setObservations({ ...observations, otherNotes: e.target.value })} rows={3} />
+                  <span className="obs-label">{t('colonyAnalyzer.observations.otherNotes')}</span>
+                  <textarea className="obs-text" value={observations.otherNotes} onChange={e => setObservations({ ...observations, otherNotes: e.target.value })} rows={3} />
                 </label>
               </div>
             </div>
             <div>
               <h3 style={{ fontWeight: 700 }}>{t('biochemicalTests.title')}</h3>
-              <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
+              <div className="bio-grid-2">
                 {Object.entries(biochemical).map(([key, val]) => (
                   <div key={key} style={{ display: 'grid', gap: 6 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>

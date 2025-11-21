@@ -1,0 +1,6 @@
+.switchWrap{display:inline-flex;align-items:center;cursor:pointer}
+.hiddenInput{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.track{position:relative;width:36px;height:20px;border-radius:9999px;border:1px solid #d1d5db;background:#f3f4f6;transition:background .2s}
+.thumb{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:9999px;background:#fff;transition:transform .2s}
+.checked .track{background:#f59e0b}
+.checked .thumb{transform:translateX(16px)}

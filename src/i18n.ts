@@ -10,6 +10,10 @@ const resources = {
         colonyAnalyzer: 'Colony Analyzer',
         biochemicalTests: 'Biochemical Tests',
         theme: 'Theme',
+        antibiogram: 'Antibiogram',
+        atlas: 'Atlas',
+        notebook: 'Notebook',
+        mediaRecipes: 'Media Recipes',
       },
       brand: 'Bio Vision',
       home: {
@@ -124,6 +128,12 @@ const resources = {
           desc: 'A curated image related to microbiology. Hover to focus and learn more.'
         }
       },
+      pages: {
+        antibiogram: { title: 'Antibiogram Simulator', subtitle: 'Record zone diameters for common antibiotics', zoneDiameter: 'Zone Diameter (mm)' },
+        atlas: { title: 'Bacterial Atlas', subtitle: 'Explore taxonomy and traits', placeholder: 'Taxonomy card' },
+        notebook: { title: 'Lab Notebook', subtitle: 'Write notes and observations for your session' },
+        media: { title: 'Media Recipes', subtitle: 'Common agar/broth formulations', gramsPerLiter: 'g/L' }
+      },
       observations: 'Observations',
       exportCsv: 'Export CSV',
       loading: 'Loading...',
@@ -146,6 +156,10 @@ const resources = {
         colonyAnalyzer: 'Analyseur de Colonies',
         biochemicalTests: 'Tests Biochimiques',
         theme: 'Thème',
+        antibiogram: 'Antibiogramme',
+        atlas: 'Atlas',
+        notebook: 'Carnet',
+        mediaRecipes: 'Milieux',
       },
       brand: 'Vision Bio',
       home: {
@@ -226,6 +240,12 @@ const resources = {
           desc: 'Image liée à la microbiologie. Survolez pour focaliser et en savoir plus.'
         }
       },
+      pages: {
+        antibiogram: { title: 'Simulateur Antibiogramme', subtitle: 'Saisir les diamètres de zone pour des antibiotiques courants', zoneDiameter: 'Diamètre (mm)' },
+        atlas: { title: 'Atlas Bactérien', subtitle: 'Explorer la taxonomie et les caractéristiques', placeholder: 'Carte de taxonomie' },
+        notebook: { title: 'Carnet de Laboratoire', subtitle: 'Écrire des notes et observations' },
+        media: { title: 'Recettes de Milieux', subtitle: 'Formulations courantes d’agar/bouillon', gramsPerLiter: 'g/L' }
+      },
       biochemicalTests: {
         title: 'Analyseur de Tests Biochimiques',
         subtitle: 'Enregistrez les résultats des tests et identifiez les bactéries',
@@ -274,6 +294,10 @@ const resources = {
         colonyAnalyzer: 'محلل المستعمرات',
         biochemicalTests: 'الاختبارات البيوكيميائية',
         theme: 'المظهر',
+        antibiogram: 'اختبار الحساسية',
+        atlas: 'الأطلس',
+        notebook: 'دفتر المختبر',
+        mediaRecipes: 'أوساط الزراعة',
       },
       brand: 'رؤية حيوية',
       home: {
@@ -352,6 +376,12 @@ const resources = {
           title: 'صورة لعلم الأحياء الدقيقة',
           desc: 'صورة تتعلق بعلم الأحياء الدقيقة. حرّك المؤشر للتركيز ومعرفة المزيد.'
         }
+      },
+      pages: {
+        antibiogram: { title: 'محاكي اختبار الحساسية', subtitle: 'سجّل أقطار مناطق التثبيط للمضادات الشائعة', zoneDiameter: 'قطر المنطقة (مم)' },
+        atlas: { title: 'الأطلس البكتيري', subtitle: 'استكشف التصنيف والخصائص', placeholder: 'بطاقة تصنيف' },
+        notebook: { title: 'دفتر المختبر', subtitle: 'اكتب الملاحظات والمرصودات' },
+        media: { title: 'وصفات الأوساط', subtitle: 'تركيبات الآغار والمرق الشائعة', gramsPerLiter: 'غ/ل' }
       },
       biochemicalTests: {
         title: 'محلل الاختبارات البيوكيميائية',

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import styles from './Home.module.css'
 import { useTranslation } from 'react-i18next'
+import gallerySrcs from '../assest'
 
 type GalleryItem = { id: string; src: string }
 
@@ -8,8 +9,7 @@ export default function Home() {
   const { t } = useTranslation('common')
   const [activeId, setActiveId] = useState<GalleryItem['id'] | null>(null)
   const items: GalleryItem[] = useMemo(() => {
-    const ctx = (require as any).context('../assest', false, /\.(png|jpe?g|gif)$/)
-    return ctx.keys().map((k: string) => ({ id: k, src: ctx(k) }))
+    return gallerySrcs.map((src, i) => ({ id: String(i), src }))
   }, [])
   const cols = [[], [], []] as GalleryItem[][]
   items.forEach((it, i) => cols[i % 3].push(it))
@@ -22,60 +22,17 @@ export default function Home() {
         <span className={styles.badge}>{t('brand')}</span>
       </div>
       <div className={`${styles.galleryLayout} ${activeId ? styles.pausedAll : ''}`}>
-        <div className={styles.column}>
-        <div className={styles.track}>
-        {left.map((it, idx) => {
+        {[...left, ...center, ...right].map((it, idx) => {
           const focused = activeId === it.id
           const paused = activeId !== null && !focused
           return (
-            <article key={`${it.id}-${idx}`} className={`${styles.card} ${styles.cardMove} ${focused ? styles.focused : ''} ${paused ? styles.paused : ''}`}>
-              <div
-                className={styles.imgWrap}
-                onClick={() => setActiveId(it.id)}
-              >
+            <article key={`${it.id}-${idx}`} className={`${styles.card} ${styles.galleryItem} ${focused ? styles.focused : ''} ${paused ? styles.paused : ''}`}>
+              <div className={styles.imgWrap} onClick={() => setActiveId(it.id)}>
                 <img className={styles.img} src={it.src} alt={t('gallery.generic.title')} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.2' }} />
               </div>
             </article>
           )
         })}
-        </div>
-        </div>
-        <div className={styles.center}>
-        <div className={`${styles.track}`}>
-        {center.map((it, idx) => {
-          const focused = activeId === it.id
-          const paused = activeId !== null && !focused
-          return (
-            <article key={`${it.id}-${idx}`} className={`${styles.card} ${styles.cardMove} ${styles.big} ${focused ? styles.focused : ''} ${paused ? styles.paused : ''}`}>
-              <div
-                className={styles.imgWrap}
-                onClick={() => setActiveId(it.id)}
-              >
-                <img className={styles.img} src={it.src} alt={t('gallery.generic.title')} />
-              </div>
-            </article>
-          )
-        })}
-        </div>
-        </div>
-        <div className={styles.column}>
-        <div className={styles.track}>
-        {right.map((it, idx) => {
-          const focused = activeId === it.id
-          const paused = activeId !== null && !focused
-          return (
-            <article key={`${it.id}-${idx}`} className={`${styles.card} ${styles.cardMove} ${focused ? styles.focused : ''} ${paused ? styles.paused : ''}`}>
-              <div
-                className={styles.imgWrap}
-                onClick={() => setActiveId(it.id)}
-              >
-                <img className={styles.img} src={it.src} alt={t('gallery.generic.title')} />
-              </div>
-            </article>
-          )
-        })}
-        </div>
-        </div>
       </div>
       {activeId && (() => {
         const it = items.find(i => i.id === activeId)

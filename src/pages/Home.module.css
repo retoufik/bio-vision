@@ -2,20 +2,19 @@
 .pausedAll .track{animation-play-state:paused}
 .pausedAll .card{filter:blur(3px) brightness(.92)}
 .heading{font-weight:900;font-size:28px;color:#111827}
-.galleryLayout{display:flex;gap:16px;flex-wrap:wrap}
-.galleryLayout > .column{flex:1 1 calc(33.333% - 16px)}
-@media(max-width:1024px){.galleryLayout > .column{flex:1 1 calc(50% - 16px)}}
-@media(max-width:640px){.galleryLayout > .column{flex:1 1 100%}}
+.galleryLayout{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.galleryItem{width:220px;height:220px}
+@media(max-width:1024px){.galleryItem{width:180px;height:180px}}
+@media(max-width:640px){.galleryItem{width:140px;height:140px}}
 .card{position:relative;border:1px solid var(--app-border);border-radius:16px;overflow:hidden;background:var(--app-bg);color:var(--app-fg)}
-.cardMove{}
-.column{display:grid;gap:16px}
-.center{display:grid;align-content:center;height:560px;overflow:hidden}
+.column{display:flex;flex-direction:column;gap:16px}
+.center{display:flex;flex-direction:column;align-items:center}
 .big{height:auto}
-.imgWrap{position:relative;height:160px;overflow:hidden}
-.center .imgWrap{height:320px}
-.img{width:100%;height:100%;object-fit:cover;filter:saturate(105%) contrast(105%);animation:float 8s ease-in-out infinite}
+.imgWrap{position:relative;overflow:hidden;width:100%;height:100%}
+.center .imgWrap{width:100%;height:100%}
+.tall .imgWrap{width:100%;height:100%}
+.img{width:100%;height:100%;object-fit:cover;display:block}
 .track{display:grid;gap:16px}
-.trackOpp{}
 .column{min-height:0}
 .content{padding:12px}
 .title{font-weight:800;color:#111827}
@@ -25,10 +24,10 @@
 .pausedAll .focused{filter:none}
 .focused.cardMove{animation:none}
 .focused{border-color:#93c5fd;box-shadow:0 0 0 2px #bfdbfe;transform:scale(1.06);z-index:5}
-.focused .imgWrap{height:240px}
+.focused .imgWrap{width:100%;height:100%}
 .focused .img{filter:none;transform:scale(1.06)}
 .focused{border-color:#93c5fd;box-shadow:0 0 0 2px #bfdbfe}
-@keyframes float{0%{transform:scale(1) translateY(0)}50%{transform:scale(1.02) translateY(-4px)}100%{transform:scale(1) translateY(0)}}
+/* float removed */
 @keyframes drift{0%{transform:translateX(0)}50%{transform:translateX(6px)}100%{transform:translateX(0)}}
 /* removed tape animations per request */
 .toolbar{display:flex;gap:8px;align-items:center}

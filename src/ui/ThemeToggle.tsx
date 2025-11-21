@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styles from './ThemeToggle.module.css'
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<string>(() => localStorage.getItem('theme') || 'light')
@@ -6,9 +7,13 @@ export default function ThemeToggle() {
     document.body.setAttribute('data-theme', theme)
     localStorage.setItem('theme', theme)
   }, [theme])
+  const checked = theme === 'light'
   return (
-    <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} style={{ padding: '8px 12px', borderRadius: 12, border: '1px solid #e5e7eb', fontWeight: 700 }}>
-      {theme === 'light' ? 'Dark' : 'Light'}
-    </button>
+    <label className={`${styles.switchWrap} ${checked ? styles.checked : ''}`}>
+      <input type="checkbox" className={styles.hiddenInput} checked={checked} onChange={e => setTheme(e.target.checked ? 'light' : 'dark')} />
+      <div className={styles.track}>
+        <div className={styles.thumb} />
+      </div>
+    </label>
   )
 }

@@ -10,6 +10,13 @@ body {
   --app-border: #e5e7eb;
 }
 
+.bio-grid-2{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:640px){.bio-grid-2{grid-template-columns:1fr}}
+
+.obs-card{background:var(--app-bg);color:var(--app-fg);border:1px solid var(--app-border);border-radius:12px;padding:12px}
+.obs-label{font-weight:700}
+.obs-select, .obs-text{border:1px solid var(--app-border);border-radius:8px;padding:8px;background:var(--app-bg);color:var(--app-fg)}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
