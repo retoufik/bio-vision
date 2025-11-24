@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { analyzeImage, CircleRegion, Colony } from '../analysis/colony'
 import { FontAwesomeIcon, byPrefixAndName } from './FA'
+import BiochemicalTestsDisplay from '../components/BiochemicalTestsDisplay'
 
 type ObservationData = {
   elevation: 'flat' | 'raised' | 'convex' | 'umbonate'
@@ -19,11 +20,21 @@ type BiochemicalTests = {
   catalase: 'positive' | 'negative' | 'unknown'
   coagulase: 'positive' | 'negative' | 'unknown'
   oxidase: 'positive' | 'negative' | 'unknown'
-  motility: 'positive' | 'negative' | 'unknown'
-  sporeForming: 'positive' | 'negative' | 'unknown'
-  fermentation: 'glucose' | 'lactose' | 'sucrose' | 'none' | 'unknown'
-  vogesProskauer: 'positive' | 'negative' | 'unknown'
-  methylRed: 'positive' | 'negative' | 'unknown'
+  indole: 'positive' | 'negative' | 'unknown'
+  citrate: 'positive' | 'negative' | 'unknown'
+  urease: 'positive' | 'negative' | 'unknown'
+  lactoseFermentation: 'positive' | 'negative' | 'unknown'
+}
+
+const BIOCHEMICAL_TESTS_CONFIG: Record<string, Omit<any, 'result' | 'photo'>> = {
+  gramStain: { name: 'Gram Stain', shortName: 'Gram', positiveColor: '#9370DB', negativeColor: '#FF6B6B', positiveDescription: 'Purple (Gram+)', negativeDescription: 'Pink/Red (Gram-)' },
+  catalase: { name: 'Catalase', shortName: 'CAT', positiveColor: '#FFD93D', negativeColor: '#E8E8E8', positiveDescription: 'Bubbles (Positive)', negativeDescription: 'No Bubbles (Negative)' },
+  oxidase: { name: 'Oxidase', shortName: 'OX', positiveColor: '#7B68EE', negativeColor: '#CCCCCC', positiveDescription: 'Purple/Black (Positive)', negativeDescription: 'Colorless (Negative)' },
+  coagulase: { name: 'Coagulase', shortName: 'COA', positiveColor: '#FF4757', negativeColor: '#F5F5F5', positiveDescription: 'Clotted (Positive)', negativeDescription: 'Clear (Negative)' },
+  indole: { name: 'Indole', shortName: 'IND', positiveColor: '#E84393', negativeColor: '#F0F0F0', positiveDescription: 'Red Ring (Positive)', negativeDescription: 'No Color (Negative)' },
+  citrate: { name: 'Citrate', shortName: 'CIT', positiveColor: '#00D2D3', negativeColor: '#F5F5F5', positiveDescription: 'Blue/Green (Positive)', negativeDescription: 'No Color (Negative)' },
+  urease: { name: 'Urease', shortName: 'URS', positiveColor: '#f2f568ff', negativeColor: '#FF9F1C', positiveDescription: 'Yellow (Positive)', negativeDescription: 'Pink/Orange (Negative)' },
+  lactoseFermentation: { name: 'Lactose Fermentation', shortName: 'LAC', positiveColor: '#f2f568ff', negativeColor: '#FFB6C1', positiveDescription: 'Yellow (Positive)', negativeDescription: 'Red/Pink (Negative)' },
 }
 
 type Candidate = { name: string; confidence: number; reason: string[] }
@@ -57,16 +68,16 @@ function identifyBacteria(colonies: Colony[], observations: ObservationData, bio
       if (observations.pigmentation === 'green') add('Pseudomonas aeruginosa', 25, 'Green pigmentation')
     } else if (biochemical.oxidase === 'negative') {
       add('Enterobacteriaceae', 15, 'Gram- Oxidase-')
-      if (biochemical.methylRed === 'positive') {
-        add('E. coli', 15, 'Methyl Red+')
-        if (biochemical.vogesProskauer === 'negative') add('E. coli', 10, 'MR+/VP-')
+      if (biochemical.indole === 'positive') {
+        add('E. coli', 15, 'Indole+')
+        if (biochemical.citrate === 'negative') add('E. coli', 10, 'Indole+/Citrate-')
       }
-      if (biochemical.vogesProskauer === 'positive') add('Klebsiella', 15, 'VP+')
+      if (biochemical.citrate === 'positive') add('Salmonella', 15, 'Citrate+')
     }
   }
-  if (biochemical.sporeForming === 'positive' && biochemical.gramStain === 'positive') add('Bacillus', 25, 'Spore-forming Gram+')
-  if (biochemical.motility === 'positive') add('E. coli', 10, 'Motile')
-  else if (biochemical.motility === 'negative') add('Klebsiella', 10, 'Non-motile')
+  if (biochemical.urease === 'positive' && biochemical.gramStain === 'positive') add('Bacillus', 25, 'Urease-positive Gram+')
+  if (biochemical.lactoseFermentation === 'positive') add('E. coli', 10, 'Lactose+')
+  else if (biochemical.lactoseFermentation === 'negative') add('Salmonella', 10, 'No lactose fermentation')
   if (colonies.length > 0) {
     const avg = colonies.reduce((s, c) => s + c.sizePx, 0) / colonies.length
     const small = colonies.filter(c => c.sizePx < avg / 2).length > colonies.length / 2
@@ -84,7 +95,7 @@ function identifyBacteria(colonies: Colony[], observations: ObservationData, bio
     add('Klebsiella', 12, 'Mucoid texture')
     add('Pseudomonas aeruginosa', 8, 'Mucoid growth')
   }
-  if (biochemical.fermentation === 'glucose') add('E. coli', 8, 'Glucose fermentation')
+  if (biochemical.lactoseFermentation === 'positive') add('E. coli', 8, 'Lactose fermentation')
   const maxScore = Math.max(...Object.values(map).map(c => c.confidence), 1)
   const list = Object.entries(map)
     .map(([name, d]) => ({ name, confidence: Math.round((d.confidence / maxScore) * 100), reason: d.reason }))
@@ -137,15 +148,20 @@ export default function UploadClient() {
   const [colorToCount, setColorToCount] = useState<'auto' | 'dark' | 'light'>('auto')
   const [invertDetection, setInvertDetection] = useState(false)
   const [observations, setObservations] = useState<ObservationData>({ elevation: 'flat', texture: 'smooth', hemolysis: 'none', pigmentation: 'none', otherNotes: '', sampleType: '', cultureMedium: '' })
-  const [biochemical, setBiochemical] = useState<BiochemicalTests>({ gramStain: 'unknown', catalase: 'unknown', coagulase: 'unknown', oxidase: 'unknown', motility: 'unknown', sporeForming: 'unknown', fermentation: 'unknown', vogesProskauer: 'unknown', methylRed: 'unknown' })
+  const [biochemical, setBiochemical] = useState<BiochemicalTests>({ gramStain: 'unknown', catalase: 'unknown', coagulase: 'unknown', oxidase: 'unknown', indole: 'unknown', citrate: 'unknown', urease: 'unknown', lactoseFermentation: 'unknown' })
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const resultCanvasRef = useRef<HTMLCanvasElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [showCamera, setShowCamera] = useState(false)
-  const [showCameraFor, setShowCameraFor] = useState<string | null>(null)
-  const [bioPhotos, setBioPhotos] = useState<Record<string, string | null>>({})
   const [selectedColonyId, setSelectedColonyId] = useState<number | null>(null)
+  const [bioPhotos, setBioPhotos] = useState<Record<string, string | null>>({})
+  const [biochemicalTests, setBiochemicalTests] = useState<Record<string, any>>(
+    Object.entries(BIOCHEMICAL_TESTS_CONFIG).reduce((acc, [key, cfg]) => {
+      acc[key] = { ...cfg, result: 'unknown', photo: undefined }
+      return acc
+    }, {} as Record<string, any>)
+  )
 
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -208,12 +224,7 @@ export default function UploadClient() {
     const ctx = c.getContext('2d')!
     ctx.drawImage(v, 0, 0)
     const data = c.toDataURL('image/jpeg')
-    if (showCameraFor) {
-      setBioPhotos(prev => ({ ...prev, [showCameraFor!]: data }))
-      setShowCameraFor(null)
-    } else {
-      setPreview(data)
-    }
+    setPreview(data)
     setShowCamera(false)
     const stream = v.srcObject as MediaStream | null
     stream?.getTracks().forEach(t => t.stop())
@@ -500,35 +511,28 @@ export default function UploadClient() {
             </div>
             <div>
               <h3 style={{ fontWeight: 700 }}>{t('biochemicalTests.title')}</h3>
-              <div className="bio-grid-2">
-                {Object.entries(biochemical).map(([key, val]) => (
-                  <div key={key} style={{ display: 'grid', gap: 6 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontWeight: 700 }}>{t(`biochemicalTests.tests.${key}`)}</span>
-                      <span style={{ fontSize: 12 }}>
-                        {val === 'positive' ? t('biochemicalTests.positive') : val === 'negative' ? t('biochemicalTests.negative') : val === 'unknown' ? t('biochemicalTests.notTested') : t(`biochemicalTests.values.${val}`, { defaultValue: String(val) })}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      <button onClick={() => setBiochemical({ ...biochemical, [key]: 'positive' as any })} style={{ flex: 1, padding: '8px 12px', borderRadius: 8, border: '2px solid #22c55e', background: val==='positive'?'#22c55e':'#22c55e22', color: val==='positive'?'#fff':'#111', fontWeight: 700 }}>✓ {t('biochemicalTests.positive')}</button>
-                      <button onClick={() => setBiochemical({ ...biochemical, [key]: 'negative' as any })} style={{ flex: 1, padding: '8px 12px', borderRadius: 8, border: '2px solid #ef4444', background: val==='negative'?'#ef4444':'#ef444422', color: val==='negative'?'#fff':'#111', fontWeight: 700 }}>✗ {t('biochemicalTests.negative')}</button>
-                      <button onClick={() => setBiochemical({ ...biochemical, [key]: 'unknown' as any })} style={{ padding: '8px 12px', borderRadius: 8, border: '2px solid #9ca3af', background: '#e5e7eb', fontWeight: 700 }}>⊘ {t('biochemicalTests.notTested')}</button>
-                      <button onClick={() => { setShowCameraFor(key); startCamera() }} style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #ccc', background: '#fff', fontWeight: 700 }}>{t('biochemicalTests.useCamera')}</button>
-                      {bioPhotos[key] && <img src={bioPhotos[key]!} alt="bio" style={{ width: 48, height: 48, borderRadius: 8, border: '1px solid #ccc' }} />}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {showCameraFor && showCamera && (
-                <div style={{ display: 'grid', gap: 8, marginTop: 8 }}>
-                  <div style={{ fontWeight: 700 }}>{t('biochemicalTests.tests.' + showCameraFor)}</div>
-                  <video ref={videoRef} style={{ width: '100%', borderRadius: 12 }} />
-                  <div>
-                    <button onClick={capturePhoto} style={{ padding: '10px 14px', borderRadius: 10, background: '#22c55e', color: '#fff', fontWeight: 700 }}>{t('biochemicalTests.optionalPhoto')}</button>
-                    <button onClick={() => { const s = videoRef.current?.srcObject as MediaStream | undefined; s?.getTracks().forEach(t => t.stop()); setShowCamera(false); setShowCameraFor(null) }} style={{ marginLeft: 8, padding: '10px 14px', borderRadius: 10, background: '#ef4444', color: '#fff', fontWeight: 700 }}>Close</button>
-                  </div>
-                </div>
-              )}
+              <BiochemicalTestsDisplay
+                testsConfig={BIOCHEMICAL_TESTS_CONFIG}
+                tests={biochemicalTests}
+                onTestChange={(key, result) => {
+                  setBiochemicalTests(prev => ({ ...prev, [key]: { ...prev[key], result } }))
+                  setBiochemical(prev => ({ ...prev, [key]: result as any }))
+                }}
+                onPhotoUpload={(key, file) => {
+                  const reader = new FileReader()
+                  reader.onload = () => {
+                    const dataUrl = reader.result as string
+                    setBioPhotos(prev => ({ ...prev, [key]: dataUrl }))
+                    setBiochemicalTests(prev => ({ ...prev, [key]: { ...prev[key], photo: dataUrl } }))
+                  }
+                  reader.readAsDataURL(file)
+                }}
+                onPhotoCapture={(key, dataUrl) => {
+                  setBioPhotos(prev => ({ ...prev, [key]: dataUrl }))
+                  setBiochemicalTests(prev => ({ ...prev, [key]: { ...prev[key], photo: dataUrl } }))
+                }}
+                showPhotos={true}
+              />
             </div>
             <div>
               <h3 style={{ fontWeight: 700 }}>{t('biochemicalTests.identification') || 'Identification'}</h3>
