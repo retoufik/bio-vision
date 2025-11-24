@@ -168,3 +168,59 @@ export function detectOxidase(dataUrl: string): Promise<'positive' | 'negative'>
     img.src = dataUrl
   })
 }
+
+/**
+ * Detects Indole test result from tube image
+ * Positive result shows RED color (Kovac's or Ehrlich's reagent turns red)
+ * Negative result shows no color change or colorless
+ */
+export function detectIndole(dataUrl: string): Promise<'positive' | 'negative'> {
+  return new Promise<'positive' | 'negative'>((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = img.height
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
+
+      // Analyze center region of the tube
+      const cx = Math.floor(img.width / 2)
+      const cy = Math.floor(img.height / 2)
+      const size = Math.floor(Math.min(img.width, img.height) * 0.2)
+      const x0 = Math.max(0, cx - size)
+      const y0 = Math.max(0, cy - size)
+      const w = Math.min(img.width - x0, size * 2)
+      const h = Math.min(img.height - y0, size * 2)
+
+      const imageData = ctx.getImageData(x0, y0, w, h).data
+      let redPixels = 0
+      let totalSamples = 0
+
+      // Sample every 3rd pixel
+      for (let i = 0; i < imageData.length; i += 12) {
+        const r = imageData[i]
+        const g = imageData[i + 1]
+        const b = imageData[i + 2]
+        const a = imageData[i + 3]
+
+        if (a > 100) { // Only count non-transparent pixels
+          totalSamples++
+          
+          // Detect red color: red must be dominant over green and blue
+          // Red dominant: R > G and R > B with significant red value and good saturation
+          const isRed = r > 100 && r > g && r > b && (r - g) > 15 && (r - b) > 15
+          
+          if (isRed) {
+            redPixels++
+          }
+        }
+      }
+
+      // Positive if >15% of sampled pixels are red
+      const redPercentage = totalSamples > 0 ? redPixels / totalSamples : 0
+      resolve(redPercentage > 0.15 ? 'positive' : 'negative')
+    }
+    img.src = dataUrl
+  })
+}

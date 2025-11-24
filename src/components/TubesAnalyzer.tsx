@@ -4,7 +4,7 @@ import BiochemicalTestsDisplay from './BiochemicalTestsDisplay'
 import profilesJson from '../data/bacteriaProfiles.json'
 import BacteriaInfoCard from './BacteriaInfoCard'
 import BacteriaInfoModalCentered from './BacteriaInfoModalCentered'
-import { detectCoagulase, detectCitrate } from '../utils/testDetection'
+import { detectCoagulase, detectCitrate, detectIndole } from '../utils/testDetection'
 
 type TestResult = 'positive' | 'negative' | 'unknown'
 
@@ -85,6 +85,13 @@ export default function TubesAnalyzer() {
     
     if (key === 'citrate') {
       detectCitrate(dataUrl).then(result => {
+        setResultFor(key, result === 'positive' ? 'positive' : 'negative')
+      })
+      return
+    }
+
+    if (key === 'indole') {
+      detectIndole(dataUrl).then(result => {
         setResultFor(key, result === 'positive' ? 'positive' : 'negative')
       })
       return
