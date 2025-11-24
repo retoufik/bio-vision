@@ -4,6 +4,8 @@ import { toast } from 'react-toastify'
 import { analyzeImage, CircleRegion, Colony } from '../analysis/colony'
 import { FontAwesomeIcon, byPrefixAndName } from './FA'
 import BiochemicalTestsDisplay from '../components/BiochemicalTestsDisplay'
+import BacteriaInfoCard from '../components/BacteriaInfoCard'
+import profilesJson from '../data/bacteriaProfiles.json'
 
 type ObservationData = {
   elevation: 'flat' | 'raised' | 'convex' | 'umbonate'
@@ -156,6 +158,7 @@ export default function UploadClient() {
   const [showCamera, setShowCamera] = useState(false)
   const [selectedColonyId, setSelectedColonyId] = useState<number | null>(null)
   const [bioPhotos, setBioPhotos] = useState<Record<string, string | null>>({})
+  const [openProfile, setOpenProfile] = useState<any | null>(null)
   const [biochemicalTests, setBiochemicalTests] = useState<Record<string, any>>(
     Object.entries(BIOCHEMICAL_TESTS_CONFIG).reduce((acc, [key, cfg]) => {
       acc[key] = { ...cfg, result: 'unknown', photo: undefined }
@@ -541,20 +544,49 @@ export default function UploadClient() {
                 if (!hasBio || colonies.length === 0) {
                   return <div style={{ border: '1px solid var(--app-border)', background: 'var(--app-bg)', color: 'var(--app-fg)', borderRadius: 12, padding: 12 }}>{t('colonyAnalyzer.identifyPrompt')}</div>
                 }
+                const candidates = identifyBacteria(colonies, observations, biochemical)
                 return (
-                  <div style={{ display: 'grid', gap: 8 }}>
-                    {identifyBacteria(colonies, observations, biochemical).map((cand, idx) => (
-                      <div key={idx} style={{ border: '1px solid #b197fc', borderRadius: 12, padding: 12 }}>
+                  <div style={{ display: 'grid', gap: 12 }}>
+                    {candidates.map((cand, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          // Find profile for this candidate
+                          const findProfile = (n: string) => {
+                            for (const k of Object.keys(profilesJson)) {
+                              const p = (profilesJson as any)[k]
+                              if (p.displayName === n || k === n || k.toLowerCase().includes(n.toLowerCase())) return p
+                            }
+                            const lower = n.toLowerCase()
+                            if (lower.includes('aureus')) return (profilesJson as any)['Staphylococcus aureus']
+                            if (lower.includes('epidermidis')) return (profilesJson as any)['Staphylococcus aureus']
+                            if (lower.includes('coli')) return (profilesJson as any)['Escherichia coli']
+                            if (lower.includes('salmonella')) return (profilesJson as any)['Salmonella']
+                            if (lower.includes('bacillus')) return (profilesJson as any)['Bacillus']
+                            if (lower.includes('listeria')) return (profilesJson as any)['Listeria monocytogenes']
+                            if (lower.includes('pseudomonas')) return (profilesJson as any)['Pseudomonas aeruginosa']
+                            if (lower.includes('streptococcus') || lower.includes('staph')) return (profilesJson as any)['Staphylococcus aureus']
+                            return null
+                          }
+                          const profile = findProfile(cand.name)
+                          if (profile) setOpenProfile(profile)
+                        }}
+                        style={{ border: '1px solid #b197fc', borderRadius: 12, padding: 12, background: 'transparent', cursor: 'pointer', textAlign: 'left', transition: 'all 150ms' }}
+                        onMouseOver={e => { e.currentTarget.style.background = '#f3f4f6'; e.currentTarget.style.borderColor = '#8b5cf6' }}
+                        onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#b197fc' }}
+                      >
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700 }}>
                           <span>{cand.name}</span>
-                          <span>{cand.confidence}%</span>
+                          <span style={{ color: '#6b7280' }}>{cand.confidence}%</span>
                         </div>
-                        <div style={{ fontSize: 12, color: '#555' }}>{cand.reason.join(' • ')}</div>
-                      </div>
+                        <div style={{ fontSize: 12, color: '#555', marginTop: 4 }}>{cand.reason.join(' • ')}</div>
+                        <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4, fontStyle: 'italic' }}>Click to view detailed profile</div>
+                      </button>
                     ))}
                   </div>
                 )
               })()}
+              {openProfile && <div style={{ marginTop: 16 }}><BacteriaInfoCard profile={openProfile} /></div>}
               <div style={{ marginTop: 12, borderTop: '1px solid #eee', paddingTop: 12 }}>
                 <div style={{ fontWeight: 700, marginBottom: 6 }}>{t('biochemicalTests.testSummary')}</div>
                 <div style={{ display: 'grid', gap: 6, fontSize: 13 }}>

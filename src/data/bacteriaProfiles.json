@@ -1,0 +1,337 @@
+{
+  "Escherichia coli": {
+    "id": "E_coli",
+    "displayName": "Escherichia coli",
+    "gramStain": "Gram-negative",
+    "morphology": "Rod (bacillus)",
+    "arrangement": "Single rods or short chains",
+    "oxygenRequirements": "Facultative anaerobe",
+    "motility": "Motile (peritrichous flagella, typical strains)",
+    "sporeFormation": "Non-spore-forming",
+    "optimalGrowthTemperature": "37°C (body temperature); can grow at 4–45°C",
+    "biochemical": {
+      "catalase": "Usually positive",
+      "oxidase": "Negative",
+      "indole": "Often positive (strain-dependent)",
+      "lactoseFermentation": "Most strains ferment lactose (on MacConkey/EMB)"
+    },
+    "habitat": {
+      "primary": "Intestinal tract of warm-blooded animals (gut microbiota)",
+      "secondary": "Surface water, soil, foods contaminated with fecal matter",
+      "conditions": "Mesophilic; grows well at 20–45°C; neutral to slightly acidic pH; moisture required",
+      "reservoirs": ["Human gut","Animal intestines","Contaminated water","Sewage"],
+      "geographicDistribution": "Worldwide"
+    },
+    "contaminationAndHealthRisks": {
+      "riskBadge": "Moderate",
+      "infections": ["Gastroenteritis","Urinary tract infections","Neonatal meningitis (specific strains)","Sepsis (opportunistic)"],
+      "targetOrgans": ["GI tract","Urinary tract","CNS (specific strains)","Blood"],
+      "pathogenicity": "Ranges from commensal to highly pathogenic depending on strain (opportunistic and pathogenic pathotypes)",
+      "transmissionRoutes": ["Foodborne","Waterborne","Fecal-oral","Direct contact with contaminated surfaces"],
+      "symptomsTimeline": "1–8 hours for foodborne illness",
+      "clinicalSymptoms": "Diarrhea (sometimes bloody), fever, abdominal pain; UTIs cause dysuria and frequency; systemic infections cause fever and sepsis",
+      "atRiskPopulations": ["Young children","Elderly","Immunocompromised","Hospitalized patients"],
+      "infectiousDose": "10²–10⁴ CFU (varies by strain and serotype)",
+      "antibioticResistanceConcerns": "Many clinical E. coli strains carry plasmid-mediated resistance (e.g., ESBLs, carbapenemases in some isolates). Resistance varies by strain and geography."
+    },
+    "foodAssociation": {
+      "commonFoods": ["Undercooked beef","Raw milk and dairy","Produce irrigated with contaminated water","Eggs (secondary)"],
+      "howContaminationOccurs": "Fecal contamination during slaughter, poor hygiene, cross-contamination from raw foods, contaminated irrigation or wash water",
+      "typicalSources": ["Raw meat","Unpasteurized dairy","Contaminated vegetables","Poorly treated water"],
+      "growthConditionsInFood": "Multiplies rapidly at room temperature (4–60°C); survives in acidic foods; produces toxins in some pathogenic strains",
+      "preventionAndControl": "Use hygienic slaughtering and processing, ensure pasteurization of milk, cook foods to safe temperatures, avoid cross-contamination, wash produce, use clean water",
+      "handlingAndCooking": "Cook ground beef to 71°C (160°F) and whole cuts to safe temperatures; reheat leftovers thoroughly; avoid raw milk",
+      "temperatureControl": "Hold hot >60°C or cold <4°C; minimize time in 4–60°C danger zone",
+      "storage": "Keep perishable foods refrigerated below 4°C; avoid temperature abuse",
+      "shelfLife": "Raw meat: 1–2 days; milk (pasteurized): 7–10 days if refrigerated; produce: 3–5 days"
+    },
+    "riskLevel": "moderate"
+  },
+  "Salmonella": {
+    "id": "Salmonella_enterica",
+    "displayName": "Salmonella (Salmonella enterica and related species)",
+    "gramStain": "Gram-negative",
+    "morphology": "Rod (bacillus)",
+    "arrangement": "Single rods",
+    "oxygenRequirements": "Facultative anaerobe",
+    "motility": "Usually motile (peritrichous flagella)",
+    "sporeFormation": "Non-spore-forming",
+    "optimalGrowthTemperature": "37°C; survives at 4–45°C",
+    "biochemical": {
+      "catalase": "Positive",
+      "oxidase": "Negative",
+      "citrate": "Often positive (varies by serovar)",
+      "lactoseFermentation": "Generally does not ferment lactose (on MacConkey appears non-lactose fermenter)"
+    },
+    "habitat": {
+      "primary": "Intestinal tract of animals (poultry, livestock) and humans",
+      "secondary": "Contaminated food production environments, water, animal feces",
+      "conditions": "Mesophilic; survives in a variety of environments including chilled and ambient temperatures; tolerant to a range of pH values",
+      "reservoirs": ["Poultry","Cattle","Reptiles and amphibians","Contaminated water","Food-processing environments"],
+      "geographicDistribution": "Worldwide"
+    },
+    "contaminationAndHealthRisks": {
+      "riskBadge": "High",
+      "infections": ["Salmonellosis (gastroenteritis)","Enteric fever (specific serovars like Typhi)","Bacteremia and invasive disease in vulnerable patients"],
+      "targetOrgans": ["GI tract","Blood","Systemic (severe cases)"],
+      "pathogenicity": "Several serovars are primary pathogens causing foodborne illness; can range from self-limiting gastroenteritis to invasive disease",
+      "transmissionRoutes": ["Foodborne","Waterborne","Direct contact with carrier animals (reptiles)","Fecal-oral"],
+      "symptomsTimeline": "12–36 hours after exposure",
+      "clinicalSymptoms": "Diarrhea, fever, abdominal cramps, vomiting; severe cases cause systemic infection and dehydration",
+      "atRiskPopulations": ["Infants","Elderly","Immunocompromised","Pregnant women"],
+      "infectiousDose": "10³–10⁶ CFU (varies by serovar and host factors)",
+      "antibioticResistanceConcerns": "Resistance (including MDR and extended-spectrum beta-lactamases) is an increasing concern in some serovars and geographic regions"
+    },
+    "foodAssociation": {
+      "commonFoods": ["Poultry and poultry products","Eggs and egg products","Undercooked meat","Raw produce contaminated with animal feces","Processed foods handled with poor hygiene"],
+      "howContaminationOccurs": "Contamination at slaughter or processing, contamination from infected animals or their feces, cross-contamination during handling",
+      "typicalSources": ["Poultry flocks","Eggs with contaminated shells","Unsanitary processing environments"],
+      "growthConditionsInFood": "Multiplies at room temperature; survives refrigeration; hardy organism; produces toxins in some cases",
+      "preventionAndControl": "Thorough cooking of poultry and eggs, pasteurization, strict hygiene in kitchens and processing plants, proper refrigeration, control at farm level",
+      "handlingAndCooking": "Cook poultry to at least 74°C (165°F); avoid consuming raw eggs; prevent cross-contamination between raw and ready-to-eat foods",
+      "temperatureControl": "Hold hot >60°C or cold <4°C; minimize danger zone exposure",
+      "storage": "Keep raw poultry refrigerated; avoid long temperature abuse",
+      "shelfLife": "Raw poultry: 1–2 days; eggs: 3–4 weeks refrigerated"
+    },
+    "riskLevel": "high"
+  },
+  "Bacillus": {
+    "id": "Bacillus_species",
+    "displayName": "Bacillus species (e.g., Bacillus cereus)",
+    "gramStain": "Gram-positive",
+    "morphology": "Rod (bacillus)",
+    "arrangement": "Single or short chains",
+    "oxygenRequirements": "Aerobic or facultatively anaerobic (species dependent)",
+    "motility": "Variable (many species motile)",
+    "sporeFormation": "Spore-forming (characteristic trait of Bacillus genus)",
+    "optimalGrowthTemperature": "25–37°C (depending on species)",
+    "biochemical": {
+      "catalase": "Positive",
+      "oxidase": "Variable (often negative)",
+      "hemolysis": "Some species β-hemolytic (e.g., B. cereus)",
+      "amylase": "Many species produce extracellular enzymes (amylases, proteases)"
+    },
+    "habitat": {
+      "primary": "Ubiquitous in soil and dust",
+      "secondary": "Plant surfaces, food-processing environments, dust",
+      "conditions": "Often tolerant to dry conditions and wide temperature ranges; spores resist heat and desiccation",
+      "reservoirs": ["Soil","Dust","Raw ingredients (spices, rice)","Processing facilities"],
+      "geographicDistribution": "Worldwide"
+    },
+    "contaminationAndHealthRisks": {
+      "riskBadge": "Opportunistic",
+      "infections": ["Foodborne intoxication (Bacillus cereus) causing emetic or diarrheal syndromes","Wound infections (rare)","Opportunistic infections in immunocompromised patients"],
+      "targetOrgans": ["GI tract","Wounds","Blood (rare)"],
+      "pathogenicity": "Most Bacillus are environmental; some species (e.g., B. cereus) are opportunistic foodborne pathogens",
+      "transmissionRoutes": ["Foodborne (preformed toxins or contaminated food)","Environmental contamination of wounds"],
+      "symptomsTimeline": "1–6 hours (emetic); 12–24 hours (diarrheal)",
+      "clinicalSymptoms": "Emetic syndrome (vomiting) or diarrheal syndrome depending on toxin; rare systemic infections in vulnerable patients",
+      "atRiskPopulations": ["Young children","Elderly","Immunocompromised"],
+      "infectiousDose": "10³–10⁵ CFU (varies by toxin type)",
+      "antibioticResistanceConcerns": "Generally susceptible to many antibiotics but species-specific; spores make control in foods more difficult"
+    },
+    "foodAssociation": {
+      "commonFoods": ["Cooked rice and rice products","Starchy foods left at room temperature","Spices and dry ingredients","Reheated foods kept at improper temperatures"],
+      "howContaminationOccurs": "Spores survive cooking; improper cooling or storage allows growth and toxin production; cross-contamination from dust or raw ingredients",
+      "typicalSources": ["Cooked rice left at room temperature","Inadequately reheated meals","Contaminated spices"],
+      "growthConditionsInFood": "Grows in warm, neutral pH foods; spores survive cooking but germinate when cooled slowly",
+      "preventionAndControl": "Proper cooling and refrigeration after cooking, avoid prolonged room-temperature holding, thoroughly reheat leftovers, practice ingredient hygiene",
+      "handlingAndCooking": "Cool cooked rice rapidly, store below 4°C, reheat to piping hot throughout before serving",
+      "temperatureControl": "Hot hold: >60°C; Cold hold: <4°C; Avoid 4–60°C 'danger zone'",
+      "storage": "Refrigerate promptly; keep hot foods >60°C if serving immediately",
+      "shelfLife": "3–4 days refrigerated; properly stored at <4°C"
+    },
+    "riskLevel": "variable"
+  },
+  "Staphylococcus aureus": {
+    "id": "Staph_aureus",
+    "displayName": "Staphylococcus aureus",
+    "gramStain": "Gram-positive",
+    "morphology": "Cocci (spherical)",
+    "arrangement": "Grape-like clusters",
+    "oxygenRequirements": "Aerobic or facultatively anaerobic",
+    "motility": "Non-motile",
+    "sporeFormation": "Non-spore-forming",
+    "optimalGrowthTemperature": "35–37°C (human body temperature)",
+    "biochemical": {
+      "catalase": "Positive",
+      "oxidase": "Negative",
+      "coagulase": "Positive (key identifier)",
+      "mannitolFermentation": "Positive"
+    },
+    "habitat": {
+      "primary": "Skin, nasal cavities, throat of humans and animals",
+      "secondary": "Dairy products, food-processing surfaces, environmental contamination",
+      "conditions": "Halotolerant (survives in high salt); grows well at body temperature; tolerates drying",
+      "reservoirs": ["Human skin","Nasal passages","Animal skin","Contaminated food"],
+      "geographicDistribution": "Worldwide"
+    },
+    "contaminationAndHealthRisks": {
+      "riskBadge": "Pathogenic",
+      "infections": ["Food poisoning (enterotoxin-mediated)","Skin and soft tissue infections","Pneumonia","Endocarditis","Osteomyelitis","Toxic shock syndrome"],
+      "targetOrgans": ["GI tract","Skin","Lungs","Heart","Bones"],
+      "pathogenicity": "Primary pathogen; produces multiple toxins including enterotoxins and Panton–Valentine leukocidin (PVL)",
+      "transmissionRoutes": ["Foodborne (preformed toxins)","Direct skin contact","Inhalation","Contaminated surfaces"],
+      "symptomsTimeline": "1–6 hours for food poisoning",
+      "clinicalSymptoms": "Sudden nausea, vomiting, abdominal cramps, diarrhea; skin infections cause pustules, abscesses; systemic infections cause fever and chills",
+      "atRiskPopulations": ["Elderly","Immunocompromised","Hospitalized patients","Those with wounds or indwelling devices"],
+      "infectiousDose": "10⁵–10⁸ CFU (for systemic infection); lower for preformed toxins",
+      "antibioticResistanceConcerns": "MRSA (methicillin-resistant S. aureus) is widespread; resistance to beta-lactams, fluoroquinolones, and macrolides reported"
+    },
+    "foodAssociation": {
+      "commonFoods": ["Dairy products (milk, cheese)","Ham and processed meats","Cream-filled pastries","Potato and egg salads","Foods handled after cooking"],
+      "howContaminationOccurs": "Direct contact from infected handler's hands or skin; cross-contamination from utensils or surfaces; can multiply and produce toxin at room temperature",
+      "typicalSources": ["Infected food handlers","Contaminated utensils","Poor personal hygiene"],
+      "growthConditionsInFood": "Grows rapidly at room temperature; produces heat-stable enterotoxins in 4–6 hours; toxins survive cooking",
+      "preventionAndControl": "Food handler hygiene, ban infected workers from handling food, prevent cross-contamination, cook to safe temps, refrigerate immediately after cooking",
+      "handlingAndCooking": "Ensure food handlers maintain high hygiene; cook to 74°C (165°F); serve hot foods immediately or refrigerate below 4°C within 2 hours",
+      "temperatureControl": "Danger zone: 4–60°C (bacteria multiply and produce toxin); hold hot at >60°C or cold at <4°C",
+      "storage": "Refrigerate below 4°C; discard perishable foods left at room temp >2 hours (>1 hour if >32°C)",
+      "shelfLife": "Varies by product; typically 3–7 days refrigerated"
+    },
+    "riskLevel": "high"
+  },
+  "Listeria monocytogenes": {
+    "id": "Listeria_mono",
+    "displayName": "Listeria monocytogenes",
+    "gramStain": "Gram-positive",
+    "morphology": "Short rod (bacillus)",
+    "arrangement": "Single rods",
+    "oxygenRequirements": "Aerobic or facultatively anaerobic",
+    "motility": "Motile at room temperature (peritrichous flagella); non-motile at 37°C",
+    "sporeFormation": "Non-spore-forming",
+    "optimalGrowthTemperature": "37°C (body temp); grows slowly at refrigeration temps (4°C)",
+    "biochemical": {
+      "catalase": "Positive",
+      "oxidase": "Negative",
+      "coagulase": "Negative",
+      "betaHemolysis": "Positive (β-hemolytic)"
+    },
+    "habitat": {
+      "primary": "Soil, vegetation, silage, contaminated dairy products",
+      "secondary": "Intestinal tracts of animals and humans; food-processing environments",
+      "conditions": "Psychrophilic (grows at refrigeration temps); salt-tolerant; survives at pH 4.3–9.6",
+      "reservoirs": ["Soil and plants","Dairy cattle","Processed foods","Contaminated water"],
+      "geographicDistribution": "Worldwide"
+    },
+    "contaminationAndHealthRisks": {
+      "riskBadge": "Pathogenic",
+      "infections": ["Listeriosis (invasive infection)","Meningitis (especially neonates)","Bacteremia/sepsis","Gastrointestinal infection","Abortion in pregnant animals"],
+      "targetOrgans": ["CNS (brain/meninges)","Blood","GI tract","Placenta"],
+      "pathogenicity": "Invasive pathogen; crosses intestinal barrier and blood–brain barrier; causes systemic infection particularly in vulnerable hosts",
+      "transmissionRoutes": ["Foodborne (contaminated dairy, deli meats, soft cheeses)","Transplacental (mother to fetus)","Inhalation (occupational)"],
+      "symptomsTimeline": "Variable (3–70 days); can be subclinical in healthy individuals",
+      "clinicalSymptoms": "Fever, headache, body aches; meningitis: stiff neck, altered mental status; bacteremia: sepsis; in pregnancy: miscarriage or neonatal infection",
+      "atRiskPopulations": ["Pregnant women (10× higher risk)","Neonates","Elderly","Immunocompromised (100–1000× higher risk than healthy individuals)"],
+      "infectiousDose": "10²–10⁴ CFU (lower in vulnerable populations)",
+      "antibioticResistanceConcerns": "Naturally resistant to cephalosporins; susceptible to penicillins and ampicillin; TMP-SMX for penicillin-allergic patients"
+    },
+    "foodAssociation": {
+      "commonFoods": ["Unpasteurized dairy products","Soft cheeses (e.g., feta, brie)","Deli meats and cold cuts","Smoked seafood","Raw vegetables"],
+      "howContaminationOccurs": "Contamination from soil/silage in dairy herds; inadequate pasteurization; post-processing contamination in deli or chilled foods",
+      "typicalSources": ["Contaminated milk supplies","Food-processing environments","Cross-contamination in deli counters"],
+      "growthConditionsInFood": "Unique ability to grow at refrigeration temps; multiplies slowly in cold, but can reach infectious levels in weeks",
+      "preventionAndControl": "Pasteurization of milk, good sanitation in processing, avoid cross-contamination, maintain proper refrigeration, cook deli meats thoroughly",
+      "handlingAndCooking": "Cook all deli meats to steaming hot (74°C/165°F); avoid soft cheeses and unpasteurized products for at-risk groups; segregate raw foods",
+      "temperatureControl": "Refrigeration at <4°C reduces but does NOT eliminate risk; growth occurs slowly even at 4°C over extended storage",
+      "storage": "Store at <4°C; limit storage duration of high-risk foods to 1–2 days; avoid prolonged cold storage",
+      "shelfLife": "Varies; deli meats 3–5 days if properly stored; soft cheeses 1–2 weeks"
+    },
+    "riskLevel": "high"
+  },
+  "Pseudomonas aeruginosa": {
+    "id": "Pseudo_aero",
+    "displayName": "Pseudomonas aeruginosa",
+    "gramStain": "Gram-negative",
+    "morphology": "Rod (bacillus)",
+    "arrangement": "Single rods",
+    "oxygenRequirements": "Strictly aerobic",
+    "motility": "Motile (polar flagella)",
+    "sporeFormation": "Non-spore-forming",
+    "optimalGrowthTemperature": "37°C; can grow at 4–42°C",
+    "biochemical": {
+      "catalase": "Positive",
+      "oxidase": "Positive (key identifier)",
+      "pigment": "Green–blue (pyoverdine and pyocyanin) in culture"
+    },
+    "habitat": {
+      "primary": "Water (tap water, pools, hot tubs, soil), environmental surfaces",
+      "secondary": "Hospital environments, medical equipment, food-processing settings",
+      "conditions": "Prefers moist environments; grows in nutrient-poor water; produces biofilms",
+      "reservoirs": ["Moist environments","Water systems","Soil","Clinical equipment"],
+      "geographicDistribution": "Worldwide"
+    },
+    "contaminationAndHealthRisks": {
+      "riskBadge": "Opportunistic",
+      "infections": ["Wound and burn infections","Respiratory tract infections (especially cystic fibrosis)","Urinary tract infections","Otitis externa (swimmer's ear)","Eye infections","Systemic infections in hospitalized patients"],
+      "targetOrgans": ["Respiratory tract","Wounds","Urinary tract","Blood (in immunocompromised)","Eyes"],
+      "pathogenicity": "Opportunistic pathogen; primarily affects immunocompromised, hospitalized, or those with damaged epithelial barriers; produces multiple virulence factors including exotoxin A",
+      "transmissionRoutes": ["Waterborne","Direct contact with contaminated surfaces or equipment","Inhalation of aerosols","Contaminated wounds"],
+      "symptomsTimeline": "Variable; can develop within hours (wound infection) to days",
+      "clinicalSymptoms": "Wound infections: green/blue pus, odor; respiratory: productive cough, fever; systemic: sepsis symptoms; otitis: ear pain and discharge",
+      "atRiskPopulations": ["Hospitalized patients","Cystic fibrosis patients","Burn patients","Immunocompromised","Catheterized patients"],
+      "infectiousDose": "Variable; opportunistic in nature; can establish with low inoculum in compromised hosts",
+      "antibioticResistanceConcerns": "Intrinsic resistance to many antibiotics; increasing resistance to fluoroquinolones, aminoglycosides, and carbapenems; biofilm formation limits antibiotic penetration"
+    },
+    "foodAssociation": {
+      "commonFoods": ["Less commonly causes foodborne illness; primarily waterborne or environmental"],
+      "howContaminationOccurs": "Contamination through water sources (inadequate treatment, biofilm in pipes); cross-contamination from moist environments; minimal risk through food if cooked",
+      "typicalSources": ["Tap water in healthcare settings","Hospital equipment","Pools and hot tubs"],
+      "growthConditionsInFood": "Can survive in moist food environments but not a major foodborne pathogen; grows in water-rich foods if stored wet",
+      "preventionAndControl": "Environmental sanitation, water treatment, proper disinfection of equipment, moisture control, hand hygiene",
+      "handlingAndCooking": "For healthcare settings: use sterile water, clean equipment thoroughly, prevent cross-contamination",
+      "temperatureControl": "Grows across temperature range; not controlled by temperature alone",
+      "storage": "Prevent moisture accumulation; keep surfaces dry",
+      "shelfLife": "N/A (not primarily a food contaminant)"
+    },
+    "riskLevel": "opportunistic"
+  },
+  "Lactobacillus": {
+    "id": "Lactobacillus_spp",
+    "displayName": "Lactobacillus species",
+    "gramStain": "Gram-positive",
+    "morphology": "Rod (bacillus)",
+    "arrangement": "Single rods or chains",
+    "oxygenRequirements": "Facultatively anaerobic (microaerophilic)",
+    "motility": "Non-motile",
+    "sporeFormation": "Non-spore-forming",
+    "optimalGrowthTemperature": "30–40°C (depending on species)",
+    "biochemical": {
+      "catalase": "Negative",
+      "oxidase": "Negative",
+      "lacticAcidProduction": "Positive (key trait)",
+      "fermentation": "Homofermentative or heterofermentative"
+    },
+    "habitat": {
+      "primary": "Fermented foods (yogurt, kimchi, sauerkraut, kombucha), human gut microbiota, vaginal flora",
+      "secondary": "Plant surfaces, dairy fermentation environments",
+      "conditions": "Tolerates acidic conditions (pH 3.5–6.0); thrives in foods with low O₂ and presence of sugars",
+      "reservoirs": ["Fermented dairy","Fermented vegetables","Human GI tract","Vaginal tract"],
+      "geographicDistribution": "Worldwide"
+    },
+    "contaminationAndHealthRisks": {
+      "riskBadge": "Safe",
+      "infections": ["Generally safe; rare opportunistic infections in severely immunocompromised (endocarditis, bacteremia)"],
+      "targetOrgans": ["Rare systemic involvement"],
+      "pathogenicity": "Non-pathogenic to commensal; beneficial in most contexts; GRAS (Generally Recognized As Safe) status",
+      "transmissionRoutes": ["Not a pathogen; present in fermented foods and human flora"],
+      "symptomsTimeline": "No pathogenic symptoms in healthy individuals",
+      "clinicalSymptoms": "None (beneficial); may cause bloating in sensitive individuals when consumed as probiotic",
+      "atRiskPopulations": ["Extremely immunocompromised (near-zero CD4 count) at minimal risk"],
+      "infectiousDose": "Not applicable",
+      "antibioticResistanceConcerns": "Intrinsic resistance to certain antibiotics (e.g., glycopeptides) is normal; not clinically concerning"
+    },
+    "foodAssociation": {
+      "commonFoods": ["Yogurt","Kefir","Sauerkraut","Kimchi","Tempeh","Miso","Kombucha","Fermented milk products"],
+      "howContaminationOccurs": "Not contamination—these bacteria are deliberately inoculated into foods for fermentation and preservation",
+      "typicalSources": ["Fermentation starter cultures","Natural fermentation from environmental bacteria"],
+      "growthConditionsInFood": "Ferments sugars to lactic acid, lowering pH and preserving food; thrives in dairy and vegetable substrates; beneficial for food safety and nutrition",
+      "preventionAndControl": "Maintain proper fermentation conditions (cool temps, anaerobic environment, clean equipment); beneficial bacteria prevent pathogenic overgrowth",
+      "handlingAndCooking": "Fermented foods should be handled gently; refrigeration extends shelf life; can be added to hot foods but excessive heat kills beneficial bacteria",
+      "temperatureControl": "Fermentation: 15–40°C (species and food dependent); storage: refrigerate to slow fermentation and maintain viability",
+      "storage": "Refrigerate fermented foods to slow fermentation; keep in anaerobic conditions (submersed in brine for vegetables, sealed for yogurt)",
+      "shelfLife": "Yogurt: 1–2 weeks; sauerkraut/kimchi: months to years if refrigerated; miso: 1–2 years in cool, dark place"
+    },
+    "riskLevel": "safe"
+  }
+}

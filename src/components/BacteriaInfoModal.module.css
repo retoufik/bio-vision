@@ -1,0 +1,70 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+.card {
+  width: min(920px, 96%);
+  max-height: 85vh;
+  overflow: auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.2);
+  transform-origin: center;
+  animation: popIn 180ms ease-out;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.title {
+  font-weight: 800;
+  font-size: 18px;
+}
+.risk {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.section {
+  margin-top: 14px;
+}
+.twoCol {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+}
+.biochemList {
+  display: grid;
+  gap: 6px;
+}
+.smallLabel {
+  font-weight: 700;
+  font-size: 13px;
+}
+.inlineButton {
+  background: none;
+  border: none;
+  color: #1f2937;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 800;
+}
+@keyframes popIn {
+  from { transform: scale(.98); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
+/* responsive */
+@media (max-width: 640px) {
+  .twoCol { grid-template-columns: 1fr; }
+  .card { padding: 14px; }
+}

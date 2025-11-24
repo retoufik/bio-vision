@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { FontAwesomeIcon, byPrefixAndName } from '../ui/FA'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import BiochemicalTestsDisplay from './BiochemicalTestsDisplay'
+import profilesJson from '../data/bacteriaProfiles.json'
+import BacteriaInfoCard from './BacteriaInfoCard'
 
 type TestResult = 'positive' | 'negative' | 'unknown'
 
@@ -48,6 +49,7 @@ export default function TubesAnalyzer() {
   )
   const [result, setResult] = useState<BacteriaResult | null>(null)
   const [isSmall, setIsSmall] = useState(false)
+  const [openProfile, setOpenProfile] = useState<any | null>(null)
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 1130px)')
@@ -142,30 +144,63 @@ export default function TubesAnalyzer() {
     <div style={{ display: 'grid', gap: 16 }}>
       <div>
         {result ? (
-          <div style={{ border: '1px solid #fbcfe8', borderRadius: 12, padding: 16 }}>
-            <h3 style={{ fontWeight: 800, color: '#db2777' }}>{t(`biochemicalTests.bacteria.${(result.name || '').replace(/\s+/g,'_')}`, { defaultValue: result.name })}</h3>
-            <div style={{ margin: '12px 0' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontWeight: 700 }}>{t('biochemicalTests.confidence')}</span>
-                <span style={{ fontWeight: 800 }}>{result.confidence}%</span>
+          <>
+            <div style={{ border: '1px solid #fbcfe8', borderRadius: 12, padding: 16, marginBottom: 16 }}>
+              <h3 style={{ fontWeight: 800, color: '#db2777' }}>
+                <button
+                  onClick={() => {
+                    // Find a matching profile in the JSON dataset
+                    const nameKey = result.name || ''
+                    const findProfile = (n: string) => {
+                      // exact match by displayName
+                      for (const k of Object.keys(profilesJson)) {
+                        const p = (profilesJson as any)[k]
+                        if (p.displayName === n || k === n) return p
+                      }
+                      // fallback: contains heuristics
+                      const lower = n.toLowerCase()
+                      if (lower.includes('coli')) return (profilesJson as any)['Escherichia coli']
+                      if (lower.includes('salmonella')) return (profilesJson as any)['Salmonella']
+                      if (lower.includes('bacillus')) return (profilesJson as any)['Bacillus']
+                      if (lower.includes('aureus')) return (profilesJson as any)['Staphylococcus aureus']
+                      if (lower.includes('listeria')) return (profilesJson as any)['Listeria monocytogenes']
+                      if (lower.includes('pseudomonas')) return (profilesJson as any)['Pseudomonas aeruginosa']
+                      if (lower.includes('lactobacillus')) return (profilesJson as any)['Lactobacillus']
+                      return null
+                    }
+                    const profile = findProfile(nameKey)
+                    if (profile) setOpenProfile(profile)
+                  }}
+                  className="inline-button"
+                  style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}
+                >
+                  {t(`biochemicalTests.bacteria.${(result.name || '').replace(/\s+/g,'_')}`, { defaultValue: result.name })}
+                </button>
+              </h3>
+              <div style={{ margin: '12px 0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontWeight: 700 }}>{t('biochemicalTests.confidence')}</span>
+                  <span style={{ fontWeight: 800 }}>{result.confidence}%</span>
+                </div>
+                <div style={{ height: 8, background: '#e5e7eb', borderRadius: 999 }}>
+                  <div style={{ width: `${result.confidence}%`, height: 8, background: 'linear-gradient(90deg,#ec4899,#6366f1)', borderRadius: 999 }} />
+                </div>
               </div>
-              <div style={{ height: 8, background: '#e5e7eb', borderRadius: 999 }}>
-                <div style={{ width: `${result.confidence}%`, height: 8, background: 'linear-gradient(90deg,#ec4899,#6366f1)', borderRadius: 999 }} />
+              <div style={{ fontWeight: 700, marginBottom: 6 }}>{t('biochemicalTests.characteristics')}</div>
+              <ul style={{ margin: 0, paddingLeft: 16 }}>
+                {result.characteristics.map((c,i) => (<li key={i} style={{ fontSize: 14 }}>{t(`biochemicalTests.characteristicsMap.${c.replace(/\W+/g,'_')}`, { defaultValue: c })}</li>))}
+              </ul>
+              <div style={{ marginTop: 12, borderTop: '1px solid #eee', paddingTop: 12 }}>
+                <div style={{ fontWeight: 700, marginBottom: 6 }}>{t('biochemicalTests.explanation')}</div>
+                <div style={{ fontSize: 14 }}>{t(`biochemicalTests.explanations.${result.name.replace(/\s+/g,'_')}`, { defaultValue: result.explanation })}</div>
+              </div>
+              <div style={{ marginTop: 12, borderTop: '1px solid #eee', paddingTop: 12 }}>
+                <div style={{ fontWeight: 700, marginBottom: 6 }}>{t('biochemicalTests.commonIn')}</div>
+                <div style={{ fontSize: 14 }}>{t(`biochemicalTests.commonInMap.${result.name.replace(/\s+/g,'_')}`, { defaultValue: result.commonIn })}</div>
               </div>
             </div>
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>{t('biochemicalTests.characteristics')}</div>
-            <ul style={{ margin: 0, paddingLeft: 16 }}>
-              {result.characteristics.map((c,i) => (<li key={i} style={{ fontSize: 14 }}>{t(`biochemicalTests.characteristicsMap.${c.replace(/\W+/g,'_')}`, { defaultValue: c })}</li>))}
-            </ul>
-            <div style={{ marginTop: 12, borderTop: '1px solid #eee', paddingTop: 12 }}>
-              <div style={{ fontWeight: 700, marginBottom: 6 }}>{t('biochemicalTests.explanation')}</div>
-              <div style={{ fontSize: 14 }}>{t(`biochemicalTests.explanations.${result.name.replace(/\s+/g,'_')}`, { defaultValue: result.explanation })}</div>
-            </div>
-            <div style={{ marginTop: 12, borderTop: '1px solid #eee', paddingTop: 12 }}>
-              <div style={{ fontWeight: 700, marginBottom: 6 }}>{t('biochemicalTests.commonIn')}</div>
-              <div style={{ fontSize: 14 }}>{t(`biochemicalTests.commonInMap.${result.name.replace(/\s+/g,'_')}`, { defaultValue: result.commonIn })}</div>
-            </div>
-          </div>
+            {openProfile && <BacteriaInfoCard profile={openProfile} />}
+          </>
         ) : (
           <div style={{ border: '1px solid #c4b5fd', borderRadius: 12, padding: 16, textAlign: 'center' }}>{t('biochemicalTests.selectResults')}</div>
         )}
@@ -185,21 +220,23 @@ export default function TubesAnalyzer() {
   )
 
   return (
-    <div style={{ display: 'grid', gap: 20, gridTemplateColumns: isSmall ? '1fr' : 'minmax(0, 2fr) minmax(0, 1fr)' }}>
-      <div style={{ display: 'grid', gap: 16 }}>
-        
-        <BiochemicalTestsDisplay
-          testsConfig={TESTS_CONFIG}
-          tests={tests}
-          onTestChange={setResultFor}
-          onPhotoUpload={uploadPhoto}
-          onPhotoCapture={processDataUrlFor}
-          showPhotos={true}
-        />
-        <button onClick={analyze} style={{ padding: '12px 16px', borderRadius: 12, background: 'linear-gradient(90deg,#ec4899,#6366f1)', color: '#fff', fontWeight: 800 }}>{t('biochemicalTests.results')}</button>
-        {isSmall && ResultsBlock}
+    <>
+      <div style={{ display: 'grid', gap: 20, gridTemplateColumns: isSmall ? '1fr' : 'minmax(0, 2fr) minmax(0, 1fr)' }}>
+        <div style={{ display: 'grid', gap: 16 }}>
+          
+          <BiochemicalTestsDisplay
+            testsConfig={TESTS_CONFIG}
+            tests={tests}
+            onTestChange={setResultFor}
+            onPhotoUpload={uploadPhoto}
+            onPhotoCapture={processDataUrlFor}
+            showPhotos={true}
+          />
+          <button onClick={analyze} style={{ padding: '12px 16px', borderRadius: 12, background: 'linear-gradient(90deg,#ec4899,#6366f1)', color: '#fff', fontWeight: 800 }}>{t('biochemicalTests.results')}</button>
+          {isSmall && ResultsBlock}
+        </div>
+        {!isSmall && <div style={{ display: 'grid', gap: 16 }}>{ResultsBlock}</div>}
       </div>
-      {!isSmall && <div style={{ display: 'grid', gap: 16 }}>{ResultsBlock}</div>}
-    </div>
+    </>
   )
 }
