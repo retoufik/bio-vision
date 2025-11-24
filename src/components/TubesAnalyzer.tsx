@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import BiochemicalTestsDisplay from './BiochemicalTestsDisplay'
 import profilesJson from '../data/bacteriaProfiles.json'
 import BacteriaInfoCard from './BacteriaInfoCard'
+import BacteriaInfoModalCentered from './BacteriaInfoModalCentered'
+import { detectCoagulase, detectCitrate } from '../utils/testDetection'
 
 type TestResult = 'positive' | 'negative' | 'unknown'
 
@@ -23,7 +25,7 @@ const TESTS_CONFIG: Record<string, Omit<BiochemicalTest, 'result' | 'photo'>> = 
   oxidase: { name: 'Oxidase', shortName: 'OX', positiveColor: '#7B68EE', negativeColor: '#CCCCCC', positiveDescription: 'Purple/Black (Positive)', negativeDescription: 'Colorless (Negative)' },
   coagulase: { name: 'Coagulase', shortName: 'COA', positiveColor: '#FF4757', negativeColor: '#F5F5F5', positiveDescription: 'Clotted (Positive)', negativeDescription: 'Clear (Negative)' },
   indole: { name: 'Indole', shortName: 'IND', positiveColor: '#E84393', negativeColor: '#F0F0F0', positiveDescription: 'Red Ring (Positive)', negativeDescription: 'No Color (Negative)' },
-  citrate: { name: 'Citrate', shortName: 'CIT', positiveColor: '#00D2D3', negativeColor: '#F5F5F5', positiveDescription: 'Blue/Green (Positive)', negativeDescription: 'No Color (Negative)' },
+  citrate: { name: 'Citrate', shortName: 'CIT', positiveColor: '#00D2D3', negativeColor: '#F5F5F5', positiveDescription: 'Dark Blue (Positive)', negativeDescription: 'No Color / Light (Negative)' },
   urease: { name: 'Urease', shortName: 'URS', positiveColor: '#f2f568ff', negativeColor: '#FF9F1C', positiveDescription: 'Yellow (Positive)', negativeDescription: 'Pink/Orange (Negative)' },
   lactoseFermentation: { name: 'Lactose Fermentation', shortName: 'LAC', positiveColor: '#f2f568ff', negativeColor: '#FFB6C1', positiveDescription: 'Yellow (Positive)', negativeDescription: 'Red/Pink (Negative)' },
 }
@@ -72,6 +74,23 @@ export default function TubesAnalyzer() {
 
   const processDataUrlFor = useCallback((key: string, dataUrl: string) => {
     setTests(prev => ({ ...prev, [key]: { ...prev[key], photo: dataUrl } }))
+    
+    // Use specialized detection for Coagulase and Citrate tests
+    if (key === 'coagulase') {
+      detectCoagulase(dataUrl).then(result => {
+        setResultFor(key, result === 'positive' ? 'positive' : 'negative')
+      })
+      return
+    }
+    
+    if (key === 'citrate') {
+      detectCitrate(dataUrl).then(result => {
+        setResultFor(key, result === 'positive' ? 'positive' : 'negative')
+      })
+      return
+    }
+    
+    // Default color-based detection for other tests
     const img = new Image()
     img.onload = () => {
       const c = document.createElement('canvas')
@@ -199,7 +218,7 @@ export default function TubesAnalyzer() {
                 <div style={{ fontSize: 14 }}>{t(`biochemicalTests.commonInMap.${result.name.replace(/\s+/g,'_')}`, { defaultValue: result.commonIn })}</div>
               </div>
             </div>
-            {openProfile && <BacteriaInfoCard profile={openProfile} />}
+            {openProfile && <BacteriaInfoModalCentered profile={openProfile} onClose={() => setOpenProfile(null)} />}
           </>
         ) : (
           <div style={{ border: '1px solid #c4b5fd', borderRadius: 12, padding: 16, textAlign: 'center' }}>{t('biochemicalTests.selectResults')}</div>

@@ -40,7 +40,7 @@ export default function BacteriaInfoModal({ profile, onClose }: Props) {
               <div style={{ marginTop: 8 }}><strong>Gram stain:</strong> {profile.gramStain}</div>
               <div style={{ marginTop: 8 }}><strong>Morphology & arrangement:</strong> {profile.morphology}{profile.arrangement ? `, ${profile.arrangement}` : ''}</div>
               <div style={{ marginTop: 8 }}><strong>Oxygen requirements:</strong> {profile.oxygenRequirements}</div>
-              <div style={{ marginTop: 8 }}><strong>Motility:</strong> {profile.motility}</div>
+              <div style={{ marginTop: 8 }}><strong>Mobility:</strong> {profile.motility}</div>
               <div style={{ marginTop: 8 }}><strong>Spore formation:</strong> {profile.sporeFormation}</div>
             </div>
             <div>

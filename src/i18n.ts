@@ -100,7 +100,7 @@ const resources = {
           citrate: 'Citrate',
           urease: 'Urease',
           lactoseFermentation: 'Lactose Fermentation',
-          motility: 'Motility',
+          motility: 'Mobility',
           sporeForming: 'Spore Forming',
           fermentation: 'Fermentation',
           vogesProskauer: 'Voges–Proskauer',

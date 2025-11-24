@@ -100,7 +100,7 @@ export default function BacteriaInfoCard({ profile, compact = false }: Props) {
               </div>
               <div>
                 <div className={styles.row}>
-                  <span className={styles.label}>Motility:</span>
+                  <span className={styles.label}>Mobility:</span>
                   <span className={styles.value}>{profile.motility}</span>
                 </div>
                 <div className={styles.row}>

@@ -6,7 +6,7 @@
     "morphology": "Rod (bacillus)",
     "arrangement": "Single rods or short chains",
     "oxygenRequirements": "Facultative anaerobe",
-    "motility": "Motile (peritrichous flagella, typical strains)",
+    "motility": "Mobile (peritrichous flagella, typical strains)",
     "sporeFormation": "Non-spore-forming",
     "optimalGrowthTemperature": "37°C (body temperature); can grow at 4–45°C",
     "biochemical": {
@@ -54,7 +54,7 @@
     "morphology": "Rod (bacillus)",
     "arrangement": "Single rods",
     "oxygenRequirements": "Facultative anaerobe",
-    "motility": "Usually motile (peritrichous flagella)",
+    "motility": "Usually mobile (peritrichous flagella)",
     "sporeFormation": "Non-spore-forming",
     "optimalGrowthTemperature": "37°C; survives at 4–45°C",
     "biochemical": {
@@ -102,7 +102,7 @@
     "morphology": "Rod (bacillus)",
     "arrangement": "Single or short chains",
     "oxygenRequirements": "Aerobic or facultatively anaerobic (species dependent)",
-    "motility": "Variable (many species motile)",
+    "motility": "Variable (many species mobile)",
     "sporeFormation": "Spore-forming (characteristic trait of Bacillus genus)",
     "optimalGrowthTemperature": "25–37°C (depending on species)",
     "biochemical": {
@@ -150,7 +150,7 @@
     "morphology": "Cocci (spherical)",
     "arrangement": "Grape-like clusters",
     "oxygenRequirements": "Aerobic or facultatively anaerobic",
-    "motility": "Non-motile",
+    "motility": "Non-mobile",
     "sporeFormation": "Non-spore-forming",
     "optimalGrowthTemperature": "35–37°C (human body temperature)",
     "biochemical": {
@@ -198,7 +198,7 @@
     "morphology": "Short rod (bacillus)",
     "arrangement": "Single rods",
     "oxygenRequirements": "Aerobic or facultatively anaerobic",
-    "motility": "Motile at room temperature (peritrichous flagella); non-motile at 37°C",
+    "motility": "Mobile at room temperature (peritrichous flagella); non-mobile at 37°C",
     "sporeFormation": "Non-spore-forming",
     "optimalGrowthTemperature": "37°C (body temp); grows slowly at refrigeration temps (4°C)",
     "biochemical": {
@@ -246,7 +246,7 @@
     "morphology": "Rod (bacillus)",
     "arrangement": "Single rods",
     "oxygenRequirements": "Strictly aerobic",
-    "motility": "Motile (polar flagella)",
+    "motility": "Mobile (polar flagella)",
     "sporeFormation": "Non-spore-forming",
     "optimalGrowthTemperature": "37°C; can grow at 4–42°C",
     "biochemical": {
@@ -293,7 +293,7 @@
     "morphology": "Rod (bacillus)",
     "arrangement": "Single rods or chains",
     "oxygenRequirements": "Facultatively anaerobic (microaerophilic)",
-    "motility": "Non-motile",
+    "motility": "Non-mobile",
     "sporeFormation": "Non-spore-forming",
     "optimalGrowthTemperature": "30–40°C (depending on species)",
     "biochemical": {
