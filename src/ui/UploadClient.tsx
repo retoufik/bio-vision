@@ -203,8 +203,8 @@ export default function UploadClient() {
         }
       }
     }
-    window.addEventListener('paste', onPaste)
-    return () => window.removeEventListener('paste', onPaste)
+    window.addEventListener('paste', onPaste as EventListener)
+    return () => window.removeEventListener('paste', onPaste as EventListener)
   }, [])
 
   async function startCamera() {

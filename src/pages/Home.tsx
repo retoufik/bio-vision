@@ -6,7 +6,7 @@ import gallerySrcs from '../assest'
 type GalleryItem = { id: string; src: string }
 
 export default function Home() {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [activeId, setActiveId] = useState<GalleryItem['id'] | null>(null)
   const items: GalleryItem[] = useMemo(() => {
     return gallerySrcs.map((src, i) => ({ id: String(i), src }))

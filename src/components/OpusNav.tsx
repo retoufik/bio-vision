@@ -5,7 +5,7 @@ import GooeyNav from '../menu/gooeyNav'
 import { useTranslation } from 'react-i18next'
 
 export default function OpusNav() {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [brandOpen, setBrandOpen] = useState(false)
   const [isNarrow, setIsNarrow] = useState(false)
