@@ -59,8 +59,8 @@ export function detectCoagulase(dataUrl: string): Promise<'positive' | 'negative
 
 /**
  * Detects Citrate test result from tube image
- * Positive result shows DARK BLUE color due to pH indicator
- * Negative result shows no color (clear/light)
+ * Positive result shows BLUE color (any shade) due to pH indicator
+ * Negative result shows no color (clear/light/other colors)
  */
 export function detectCitrate(dataUrl: string): Promise<'positive' | 'negative'> {
   return new Promise<'positive' | 'negative'>((resolve) => {
@@ -82,7 +82,7 @@ export function detectCitrate(dataUrl: string): Promise<'positive' | 'negative'>
       const h = Math.min(img.height - y0, size * 2)
 
       const imageData = ctx.getImageData(x0, y0, w, h).data
-      let darkBluePixels = 0
+      let bluePixels = 0
       let totalSamples = 0
 
       // Sample every 3rd pixel
@@ -95,19 +95,19 @@ export function detectCitrate(dataUrl: string): Promise<'positive' | 'negative'>
         if (a > 100) { // Only count non-transparent pixels
           totalSamples++
           
-          // Detect dark blue: high blue value, low red and green
-          // Dark blue means lower overall luminance but blue is dominant
-          const isDarkBlue = b > 80 && b > r * 2 && b > g * 2 && r < 100 && g < 100
+          // Detect blue color (any shade): blue must be dominant over red and green
+          // More lenient criteria to detect various blue shades
+          const isBlue = b > r && b > g && b > 60 && (b - r) > 10 && (b - g) > 10
           
-          if (isDarkBlue) {
-            darkBluePixels++
+          if (isBlue) {
+            bluePixels++
           }
         }
       }
 
-      // Positive if >20% of sampled pixels are dark blue
-      const darkBluePercentage = totalSamples > 0 ? darkBluePixels / totalSamples : 0
-      resolve(darkBluePercentage > 0.2 ? 'positive' : 'negative')
+      // Positive if >15% of sampled pixels are blue
+      const bluePercentage = totalSamples > 0 ? bluePixels / totalSamples : 0
+      resolve(bluePercentage > 0.15 ? 'positive' : 'negative')
     }
     img.src = dataUrl
   })

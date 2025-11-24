@@ -34,7 +34,7 @@ const BIOCHEMICAL_TESTS_CONFIG: Record<string, Omit<any, 'result' | 'photo'>> = 
   oxidase: { name: 'Oxidase', shortName: 'OX', positiveColor: '#7B68EE', negativeColor: '#CCCCCC', positiveDescription: 'Purple/Black (Positive)', negativeDescription: 'Colorless (Negative)' },
   coagulase: { name: 'Coagulase', shortName: 'COA', positiveColor: '#FF4757', negativeColor: '#F5F5F5', positiveDescription: 'Clotted (Positive)', negativeDescription: 'Clear (Negative)' },
   indole: { name: 'Indole', shortName: 'IND', positiveColor: '#E84393', negativeColor: '#F0F0F0', positiveDescription: 'Red Ring (Positive)', negativeDescription: 'No Color (Negative)' },
-  citrate: { name: 'Citrate', shortName: 'CIT', positiveColor: '#00D2D3', negativeColor: '#F5F5F5', positiveDescription: 'Dark Blue (Positive)', negativeDescription: 'No Color / Light (Negative)' },
+  citrate: { name: 'Citrate', shortName: 'CIT', positiveColor: '#00D2D3', negativeColor: '#F5F5F5', positiveDescription: 'Blue (Positive)', negativeDescription: 'No Color / Light (Negative)' },
   urease: { name: 'Urease', shortName: 'URS', positiveColor: '#f2f568ff', negativeColor: '#FF9F1C', positiveDescription: 'Yellow (Positive)', negativeDescription: 'Pink/Orange (Negative)' },
   lactoseFermentation: { name: 'Lactose Fermentation', shortName: 'LAC', positiveColor: '#f2f568ff', negativeColor: '#FFB6C1', positiveDescription: 'Yellow (Positive)', negativeDescription: 'Red/Pink (Negative)' },
 }
